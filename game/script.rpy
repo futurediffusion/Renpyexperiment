@@ -9,6 +9,23 @@ image lumi normal = "sylvie green normal.png"
 image lumi feliz = "sylvie green smile.png"
 image lumi preocupada = "sylvie green surprised.png"
 
+# Transiciones y animaciones avanzadas
+define teleport_dissolve = ImageDissolve("images/imagedissolve teleport.png", 0.75, ramplen=64)
+
+transform holo_glow:
+    alpha 0.0
+    linear 0.4 alpha 1.0
+    block:
+        linear 1.0 alpha 0.6
+        linear 1.0 alpha 1.0
+        repeat
+
+transform spin_zoom:
+    anchor (0.5, 0.5)
+    rotate 0
+    linear 6.0 rotate 360
+    repeat
+
 # Variables para controlar la historia.
 default confianza = 0
 default diagnostico = False
@@ -38,7 +55,7 @@ label start:
     c "Tengo que ir al club, pero mantente alerta." 
     c "Si averiguas algo, quiza pueda convertirlo en mi proxima obra." 
     hide lucy happy
-    show lumi normal
+    show lumi normal at holo_glow
     with dissolve
     l "\u00a1Buenos dias, Sergio! Hoy tengo algo importante que contarte."
     h "\u00bfMas deberes? Espero que sea una broma."
@@ -152,8 +169,9 @@ label final_union:
     scene bg club
     with fade
     "Entrelazamos mente y codigo. Siento su calor artificial mezclarse con mi consciencia."
-    show magic
-    show lumi feliz
+    show magic at spin_zoom
+    with teleport_dissolve
+    show lumi feliz at holo_glow
     show eileen happy at left
     e "Nunca habia visto una union tan extrana. u00a1Romance sobrenatural en vivo!"
     e "Registrare cada detalle en mi diario de anomalias."
@@ -177,7 +195,7 @@ label final_union:
 label final_libre:
     scene bg meadow
     with fade
-    show lumi normal
+    show lumi normal at holo_glow
     h "Abrire cada cerrojo de tu codigo para que seas libre."
     show eileen concerned at left
     e "Este misterio quedara como una leyenda urbana."
