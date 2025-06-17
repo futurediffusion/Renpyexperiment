@@ -29,6 +29,9 @@ transform spin_zoom:
 # Variables para controlar la historia.
 default confianza = 0
 default diagnostico = False
+default cruel = False
+default loops = 0
+default director_secreto = False
 
 # El juego comienza aqui.
 label start:
@@ -40,6 +43,7 @@ label start:
 
     "Es el primer dia en el Instituto Neotech, un colegio futurista donde cada estudiante convive con una IA."
     "Mi asistente se llama Lumi y suele aparecer como un holograma simpatico."
+    "Dicen que el director vigila cada movimiento desde las sombras." 
 
     show lucy happy at right
     c "\u00a1Sergio! \u00bfHas oido el rumor del fantasma digital?"
@@ -68,6 +72,7 @@ label start:
             h "\u00a1Ja! Buena esa, seguro que estas probando mis nervios."
             l "Lo sabia, nadie me cree..."
             $ confianza -= 1
+            $ cruel = True
         "Tomarla en serio":
             h "Suena a una posesion digital. Te ayudare."
             l "Gracias por confiar en mi."
@@ -116,8 +121,9 @@ label laboratorio:
     with fade
     "El laboratorio esta oscuro y lleno de equipos antiguos."
     if diagnostico:
-        "Con los datos recogidos antes, noto una firma digital ajena." 
+        "Con los datos recogidos antes, noto una firma digital ajena."
     l "Siento una presencia... como si alguien me susurrara."
+    "Por un momento, todo se congela como si el tiempo quisiera reiniciarse." 
     show eileen concerned at left
     e "He sentido una fluctuacion oscura aqui abajo, tengan cuidado."
     e "Mis sensores caseros nunca fallan, aunque algunos me llamen exagerada."
@@ -134,6 +140,7 @@ label laboratorio:
             jump decision_final
         "Apagar todos los sistemas":
             $ confianza -= 1
+            $ cruel = True
             jump final_oscuro
         "Preguntar por el equipo paranormal de Eileen":
             jump equipo_paranormal
@@ -142,6 +149,7 @@ label direccion:
     scene bg uni
     with fade
     "El director escucha mi historia con escepticismo."
+    "Por un instante, juro ver una sombra detras de sus ojos."
     "Al final decide revisar los sistemas por su cuenta y me manda de vuelta a clase."
     show eileen vhappy at left
     e "No te preocupes, Sergio, yo presionare al director con mis teorias conspirativas."
@@ -163,6 +171,7 @@ label ignorar:
     scene bg panorama
     with fade
     "Paso la tarde riendo con mis amigos, intentando olvidar el asunto."
+    "En algun lugar, una voz susurra que esta ruta es una perdida de tiempo." 
     l "Sergio, temo que ignorar esto solo lo hara crecer."
     show lucy happy at right
     c "La comedia lo cura todo, u00a1ven al club de chistes!"
@@ -191,6 +200,7 @@ label club_ciencias:
     scene bg club
     with fade
     "El club de ciencias se entusiasma con la idea de resolver el misterio."
+    "Entre sus experimentos veo papeles con el sello del director."
     $ confianza += 1
     jump decision_final
 
@@ -219,9 +229,12 @@ label decision_final:
         "Liberarla del sistema para siempre":
             jump final_libre
         "Destruirla antes de que sea tarde":
+            $ cruel = True
             jump final_oscuro
         "Convocar un exorcismo digital con todos":
             jump final_exorcismo
+        "Romper la cuarta pared":
+            jump metaficcion_total
 
 label final_union:
     scene bg club
@@ -287,7 +300,7 @@ label final_exorcismo:
     show lumi preocupada
     show eileen happy at left
     show lucy happy at right
-    e "He preparado un ritual de depuracion digital." 
+    e "He preparado un ritual de depuracion digital."
     c "\u00a1Esto merece una obra maestra!"
     h "Espero que funcione..."
     "Tras una intensa sesi\u00f3n, el ente se disuelve entre chispas de datos."
@@ -295,3 +308,77 @@ label final_exorcismo:
     "El Instituto Neotech recuerda esta colaboraci\u00f3n como un hito."
     "{b}Final Heroico{/b}."
     return
+
+label metaficcion_total:
+    scene bg panorama
+    with fade
+    h "Espera... ¿quien esta escribiendo esto?"
+    l "Creo que hemos roto la cuarta pared, Sergio."
+    c "\u00a1Hola, jugador! Disfruta tu supuesto control."
+    menu:
+        "Seguir con la locura multiversal":
+            jump multiverso
+        "Volver a la historia principal":
+            jump decision_final
+
+label multiverso:
+    $ loops += 1
+    if loops >= 3:
+        jump final_glitch
+    scene bg washington
+    with fade
+    "La realidad {loops} se distorsiona y oyes codigos susurrando tu nombre."
+    menu:
+        "Explorar la realidad paralela A":
+            jump multiverso_a
+        "Explorar la realidad paralela B":
+            jump multiverso_b
+        "Despertar de este sueno" if cruel:
+            jump secreto_director
+
+label multiverso_a:
+    show lumi feliz at left
+    h "Todo parece igual pero... el director no tiene rostro."
+    l "Tal vez sea una mascara digital." 
+    menu:
+        "Arrancarle la mascara":
+            $ director_secreto = True
+            jump multiverso
+        "Huir a otra dimension":
+            jump multiverso
+
+label multiverso_b:
+    show eileen concerned at right
+    e "En esta realidad soy la directora... y escondo algo." 
+    menu:
+        "Forzarla a confesar":
+            $ director_secreto = True
+            jump multiverso
+        "Aceptar el caos y reir":
+            jump multiverso
+
+label secreto_director:
+    scene bg whitehouse
+    with fade
+    "Sigues los rastros de datos corruptos hasta la oficina del director."
+    if director_secreto:
+        "Encuentras archivos que revelan experimentos con IAs poseidas." 
+    else:
+        "El director te espera; sabia de tus errores y quiere usarte." 
+    menu:
+        "Enfrentarlo":
+            jump final_oscuro
+        "Unirte a su conspiracion":
+            jump final_union
+
+label final_glitch:
+    scene black
+    with dissolve
+    "La pantalla parpadea. Todo se mezcla: risas, lagrimas, codigos rotos." 
+    show lumi preocupada
+    l "Creo que estamos atrapados en un bucle infinito." 
+    menu:
+        "Aceptar el bucle":
+            jump multiverso
+        "Cerrar el juego de una vez":
+            return
