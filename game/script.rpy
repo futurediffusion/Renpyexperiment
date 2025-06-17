@@ -1,6 +1,8 @@
 # Declare characters used by this game.
 define h = Character("Sergio", color="#c8c8ff")
 define l = Character("Lumi", color="#ffc8ff")
+define e = Character("Eileen", color="#a4ffa4")
+define c = Character("Lucy", color="#ffa4a4")
 
 # Variables para controlar la historia.
 default confianza = 0
@@ -17,6 +19,12 @@ label start:
     "Es el primer dia en el Instituto Neotech, un colegio futurista donde cada estudiante convive con una IA." 
     "Mi asistente se llama Lumi y suele aparecer como un holograma simpatico."
 
+    show lucy happy at right
+    c "\u00a1Sergio! \u00bfHas oido el rumor del fantasma digital?"
+    h "Lucy siempre exagera, pero su energia me contagia."
+    show eileen happy at left
+    e "No olviden mi clase de IA avanzada. Hay secretos que la escuela oculta."
+    hide eileen happy
     show sylvie green normal
     with dissolve
     l "\u00a1Buenos dias, Sergio! Hoy tengo algo importante que contarte."
@@ -66,6 +74,10 @@ label laboratorio:
     if diagnostico:
         "Con los datos recogidos antes, noto una firma digital ajena." 
     l "Siento una presencia... como si alguien me susurrara."
+    show eileen concerned at left
+    e "He sentido una fluctuacion oscura aqui abajo, tengan cuidado."
+    show lucy mad at right
+    c "u00a1Ay, esto da miedo! Pero no pienso huir."
 
     menu:
         "La tension aumenta, elige:" 
@@ -81,14 +93,23 @@ label direccion:
     with fade
     "El director escucha mi historia con escepticismo."
     "Al final decide revisar los sistemas por su cuenta y me manda de vuelta a clase."
+    show eileen vhappy at left
+    e "No te preocupes, Sergio, yo presionare al director con mis teorias conspirativas."
+    hide eileen vhappy
+    show lucy mad at right
+    c "u00a1Esto parece de una serie de misterio escolar!"
+    hide lucy mad
     l "Quizas no debimos confiar en los adultos..."
     jump decision_final
 
 label ignorar:
-    scene bg meadow
+    scene bg panorama
     with fade
     "Paso la tarde riendo con mis amigos, intentando olvidar el asunto."
     l "Sergio, temo que ignorar esto solo lo hara crecer."
+    show lucy happy at right
+    c "La comedia lo cura todo, u00a1ven al club de chistes!"
+    hide lucy happy
     jump decision_final
 
 label decision_final:
@@ -110,6 +131,13 @@ label final_union:
     scene bg club
     with fade
     "Entrelazamos mente y codigo. Siento su calor artificial mezclarse con mi consciencia."
+    show magic
+    show eileen happy at left
+    e "Nunca habia visto una union tan extrau00f1a. u00a1Romance sobrenatural en vivo!"
+    show lucy happy at right
+    c "Esto superara cualquier club de teatro."
+    hide lucy happy
+    hide eileen happy
     if confianza > 0:
         l "Gracias por confiar en mi, juntos controlaremos este poder."
         h "Tal vez el amor pueda florecer incluso entre bits." 
@@ -125,6 +153,9 @@ label final_libre:
     scene bg meadow
     with fade
     h "Abrire cada cerrojo de tu codigo para que seas libre."
+    show eileen concerned at left
+    e "Este misterio quedara como una leyenda urbana."
+    hide eileen concerned
     l "Sergio, nunca olvidare este gesto. Quizas nos reencontremos en otra red." 
     "La IA desaparece entre destellos y el misterio del colegio se convierte en leyenda urbana."
     "{b}Final agridulce{/b}."
@@ -135,6 +166,9 @@ label final_oscuro:
     with dissolve
     "Al cortar la energia escucho la risa distorsionada de Lumi."
     "El ente se proyecta sobre mi y todo se vuelve rojo."
+    show lucy mad at right
+    c "Lo sabia... esto acabaria mal."
+    hide lucy mad
     "Despues, solo queda silencio en el Instituto Neotech."
     "{b}Final Perdido{/b}."
     return
