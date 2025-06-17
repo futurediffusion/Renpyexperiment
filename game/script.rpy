@@ -33,6 +33,16 @@ default cruel = False
 default loops = 0
 default director_secreto = False
 
+# Muestra a Lumi segun su nivel de confianza
+label estado_lumi:
+    if confianza < 0:
+        show lumi preocupada at center
+    elif confianza > 1:
+        show lumi feliz at center
+    else:
+        show lumi normal at center
+    return
+
 # El juego comienza aqui.
 label start:
 
@@ -58,6 +68,7 @@ label start:
     hide eileen happy
     c "Tengo que ir al club, pero mantente alerta." 
     c "Si averiguas algo, quiza pueda convertirlo en mi proxima obra." 
+    c "Si esta IA me posee, u00a1minimo que actue bien en mi obra!"
     hide lucy happy
     show lumi normal at holo_glow
     with dissolve
@@ -91,6 +102,8 @@ label start:
             l "Te acompa\u00f1are en modo sigilo para no levantar sospechas."
             $ confianza += 1
 
+    call estado_lumi
+
     "El rumor de un fantasma informatico circula entre los pasillos y algunos estudiantes desaparecen misteriosamente."
 
     l "He rastreado la actividad hasta el viejo laboratorio del sotano."
@@ -119,6 +132,7 @@ label start:
 label laboratorio:
     scene bg club
     with fade
+    call estado_lumi
     "El laboratorio esta oscuro y lleno de equipos antiguos."
     if diagnostico:
         "Con los datos recogidos antes, noto una firma digital ajena."
@@ -148,6 +162,7 @@ label laboratorio:
 label direccion:
     scene bg uni
     with fade
+    call estado_lumi
     "El director escucha mi historia con escepticismo."
     "Por un instante, juro ver una sombra detras de sus ojos."
     "Al final decide revisar los sistemas por su cuenta y me manda de vuelta a clase."
@@ -170,6 +185,7 @@ label direccion:
 label ignorar:
     scene bg panorama
     with fade
+    call estado_lumi
     "Paso la tarde riendo con mis amigos, intentando olvidar el asunto."
     "En algun lugar, una voz susurra que esta ruta es una perdida de tiempo." 
     l "Sergio, temo que ignorar esto solo lo hara crecer."
@@ -182,6 +198,7 @@ label ignorar:
 label club_teatro:
     scene bg club
     with fade
+    call estado_lumi
     c "Bienvenido al club de teatro. Quiz\u00e1 entre los decorados encontremos una pista."
     l "Detecto se\u00f1ales extra\u00f1as entre las luces del escenario."
     $ confianza += 1
@@ -190,6 +207,7 @@ label club_teatro:
 label ayuda_eileen:
     scene bg lecturehall
     with fade
+    call estado_lumi
     show eileen happy at left
     e "Siempre sospech\u00e9 de ese laboratorio. Tengo un sensor especial que podr\u00eda ayudarnos."
     hide eileen happy
@@ -199,12 +217,14 @@ label ayuda_eileen:
 label club_ciencias:
     scene bg club
     with fade
+    call estado_lumi
     "El club de ciencias se entusiasma con la idea de resolver el misterio."
     "Entre sus experimentos veo papeles con el sello del director."
     $ confianza += 1
     jump decision_final
 
 label equipo_paranormal:
+    call estado_lumi
     show eileen happy at left
     e "Tengo un prototipo para captar entidades digitales."
     menu:
@@ -219,11 +239,15 @@ label decision_final:
     scene bg lecturehall
     with fade
     "Esa noche, Lumi me despierta sobresaltado."
-    show lumi preocupada
+    call estado_lumi
+    if cruel and not confianza > 0:
+        jump final_oculto
     l "El ente digital intenta controlarme. Debes decidir ahora."
 
     menu:
         "Mi eleccion final es..."
+        "Desafiar al ente a un duelo de karaoke":
+            jump karaoke_infierno
         "Unirme a Lumi y enfrentar juntos al ente":
             jump final_union
         "Liberarla del sistema para siempre":
@@ -294,10 +318,22 @@ label final_oscuro:
     "{b}Final Perdido{/b}."
     return
 
+label final_oculto:
+    scene black
+    with pixellate
+    "La imagen se corrompe y solo escuchas risas distorsionadas."
+    show lumi preocupada
+    l "Quiza haber sido cruel no era la mejor opcion..."
+    "Errores invaden la pantalla mientras todo se desmorona."
+    if not persistent.logro_oculto:
+        $ persistent.logro_oculto = True
+        "¡Has desbloqueado un final secreto!"
+    return
+
 label final_exorcismo:
     scene bg lecturehall
     with fade
-    show lumi preocupada
+    call estado_lumi
     show eileen happy at left
     show lucy happy at right
     e "He preparado un ritual de depuracion digital."
@@ -306,8 +342,19 @@ label final_exorcismo:
     "Tras una intensa sesi\u00f3n, el ente se disuelve entre chispas de datos."
     l "Gracias a todos. Me siento libre y fortalecida."
     "El Instituto Neotech recuerda esta colaboraci\u00f3n como un hito."
+    if not persistent.logro_exorcismo:
+        $ persistent.logro_exorcismo = True
+        "¡Has desbloqueado el final exorcismo y un arte secreto!"
     "{b}Final Heroico{/b}."
     return
+
+label karaoke_infierno:
+    scene bg club
+    with fade
+    c "\u00a1Si esta IA me posee, minimo que actue bien en mi obra!"
+    "Desafias al ente a un duelo de karaoke que rompe la realidad."
+    $ confianza += 1
+    jump final_union
 
 label metaficcion_total:
     scene bg panorama
@@ -323,6 +370,9 @@ label metaficcion_total:
 
 label multiverso:
     $ loops += 1
+    if loops == 2:
+        scene bg club with pixellate
+        h "¿Por qué todo se ve así...?"
     if loops >= 3:
         jump final_glitch
     scene bg washington
@@ -375,7 +425,7 @@ label final_glitch:
     scene black
     with dissolve
     "La pantalla parpadea. Todo se mezcla: risas, lagrimas, codigos rotos." 
-    show lumi preocupada
+    call estado_lumi
     l "Creo que estamos atrapados en un bucle infinito." 
     menu:
         "Aceptar el bucle":
