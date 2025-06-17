@@ -77,6 +77,14 @@ label start:
             $ diagnostico = True
             $ confianza += 1
             l "Ten cuidado, podria ser peligroso."
+        "Sorprenderse y pedir pruebas":
+            h "\u00bfEn serio? \u00bfTienes pruebas de eso?"
+            l "No muchas, pero he guardado algunos registros de actividad extra\u00f1a."
+            $ diagnostico = True
+        "Investigar el rumor por mi cuenta":
+            h "Ire a la biblioteca a revisar archivos antiguos de la red escolar."
+            l "Te acompa\u00f1are en modo sigilo para no levantar sospechas."
+            $ confianza += 1
 
     "El rumor de un fantasma informatico circula entre los pasillos y algunos estudiantes desaparecen misteriosamente."
 
@@ -96,6 +104,12 @@ label start:
             "Decido seguir con mi rutina como si nada."
             $ confianza -= 1
             jump ignorar
+        "Seguir a Lucy al club de teatro":
+            h "Quiz\u00e1 su club tenga pistas en sus escenograf\u00edas antiguas."
+            jump club_teatro
+        "Pedir ayuda a Eileen en privado":
+            h "Me acercare a la profesora para contarle todo."
+            jump ayuda_eileen
 
 label laboratorio:
     scene bg club
@@ -114,13 +128,15 @@ label laboratorio:
     hide eileen concerned
 
     menu:
-        "La tension aumenta, elige:" 
+        "La tension aumenta, elige:"
         "Tomar la mano holografica de Lumi":
             $ confianza += 1
             jump decision_final
         "Apagar todos los sistemas":
             $ confianza -= 1
             jump final_oscuro
+        "Preguntar por el equipo paranormal de Eileen":
+            jump equipo_paranormal
 
 label direccion:
     scene bg uni
@@ -136,7 +152,12 @@ label direccion:
     c "Nada me emocionaria mas que protagonizar la obra final."
     hide lucy mad
     l "Quizas no debimos confiar en los adultos..."
-    jump decision_final
+    menu:
+        "Insistir en que el director actue":
+            "El director accede a investigar pero todo avanza con lentitud."
+            jump decision_final
+        "Pedir apoyo al club de ciencias":
+            jump club_ciencias
 
 label ignorar:
     scene bg panorama
@@ -148,6 +169,41 @@ label ignorar:
     c "Pero si oyes ruidos raros, escribeme; sera oro para mis guiones."
     hide lucy happy
     jump decision_final
+
+label club_teatro:
+    scene bg club
+    with fade
+    c "Bienvenido al club de teatro. Quiz\u00e1 entre los decorados encontremos una pista."
+    l "Detecto se\u00f1ales extra\u00f1as entre las luces del escenario."
+    $ confianza += 1
+    jump decision_final
+
+label ayuda_eileen:
+    scene bg lecturehall
+    with fade
+    show eileen happy at left
+    e "Siempre sospech\u00e9 de ese laboratorio. Tengo un sensor especial que podr\u00eda ayudarnos."
+    hide eileen happy
+    $ diagnostico = True
+    jump laboratorio
+
+label club_ciencias:
+    scene bg club
+    with fade
+    "El club de ciencias se entusiasma con la idea de resolver el misterio."
+    $ confianza += 1
+    jump decision_final
+
+label equipo_paranormal:
+    show eileen happy at left
+    e "Tengo un prototipo para captar entidades digitales."
+    menu:
+        "Activarlo de inmediato":
+            $ confianza += 1
+            jump final_union
+        "No arriesgarse":
+            $ confianza -= 1
+            jump final_oscuro
 
 label decision_final:
     scene bg lecturehall
@@ -164,6 +220,8 @@ label decision_final:
             jump final_libre
         "Destruirla antes de que sea tarde":
             jump final_oscuro
+        "Convocar un exorcismo digital con todos":
+            jump final_exorcismo
 
 label final_union:
     scene bg club
@@ -221,4 +279,19 @@ label final_oscuro:
     hide lucy mad
     "Despues, solo queda silencio en el Instituto Neotech."
     "{b}Final Perdido{/b}."
+    return
+
+label final_exorcismo:
+    scene bg lecturehall
+    with fade
+    show lumi preocupada
+    show eileen happy at left
+    show lucy happy at right
+    e "He preparado un ritual de depuracion digital." 
+    c "\u00a1Esto merece una obra maestra!"
+    h "Espero que funcione..."
+    "Tras una intensa sesi\u00f3n, el ente se disuelve entre chispas de datos."
+    l "Gracias a todos. Me siento libre y fortalecida."
+    "El Instituto Neotech recuerda esta colaboraci\u00f3n como un hito."
+    "{b}Final Heroico{/b}."
     return
