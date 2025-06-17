@@ -27,11 +27,16 @@ label start:
     show lucy happy at right
     c "\u00a1Sergio! \u00bfHas oido el rumor del fantasma digital?"
     h "Lucy siempre exagera, pero su energia me contagia."
+    c "Me llamo Lucy Torres, futura estrella del club de teatro." 
+    c "No puedo evitar investigar cada misterio para inspirar mis obras." 
     show eileen happy at left
     e "No olviden mi clase de IA avanzada. Hay secretos que la escuela oculta."
+    e "Soy la profesora Eileen Ramirez. Entre mis pasiones estan las conspiraciones tecnologicas."
+    e "Si descubren algo extrano, no duden en contarmelo."
     "La profesora se aleja dejandonos intrigados."
     hide eileen happy
-    c "Tengo que ir al club, pero mantente alerta."
+    c "Tengo que ir al club, pero mantente alerta." 
+    c "Si averiguas algo, quiza pueda convertirlo en mi proxima obra." 
     hide lucy happy
     show lumi normal
     with dissolve
@@ -84,8 +89,10 @@ label laboratorio:
     l "Siento una presencia... como si alguien me susurrara."
     show eileen concerned at left
     e "He sentido una fluctuacion oscura aqui abajo, tengan cuidado."
+    e "Mis sensores caseros nunca fallan, aunque algunos me llamen exagerada."
     show lucy mad at right
     c "\u00a1Ay, esto da miedo! Pero no pienso huir."
+    c "Imagina los aplausos si resolvemos esto y lo llevo al escenario." 
     hide lucy mad
     hide eileen concerned
 
@@ -105,9 +112,11 @@ label direccion:
     "Al final decide revisar los sistemas por su cuenta y me manda de vuelta a clase."
     show eileen vhappy at left
     e "No te preocupes, Sergio, yo presionare al director con mis teorias conspirativas."
+    e "Aunque me tachen de obsesiva, mis investigaciones siempre tienen fundamento."
     hide eileen vhappy
     show lucy mad at right
     c "u00a1Esto parece de una serie de misterio escolar!"
+    c "Nada me emocionaria mas que protagonizar la obra final."
     hide lucy mad
     l "Quizas no debimos confiar en los adultos..."
     jump decision_final
@@ -119,6 +128,7 @@ label ignorar:
     l "Sergio, temo que ignorar esto solo lo hara crecer."
     show lucy happy at right
     c "La comedia lo cura todo, u00a1ven al club de chistes!"
+    c "Pero si oyes ruidos raros, escribeme; sera oro para mis guiones."
     hide lucy happy
     jump decision_final
 
@@ -145,9 +155,11 @@ label final_union:
     show magic
     show lumi feliz
     show eileen happy at left
-    e "Nunca habia visto una union tan extrau00f1a. u00a1Romance sobrenatural en vivo!"
+    e "Nunca habia visto una union tan extrana. u00a1Romance sobrenatural en vivo!"
+    e "Registrare cada detalle en mi diario de anomalias."
     show lucy happy at right
     c "Esto superara cualquier club de teatro."
+    c "Ojala invites a tu IA a mi proxima funcion."
     hide lucy happy
     hide eileen happy
     hide lumi feliz
@@ -169,6 +181,10 @@ label final_libre:
     h "Abrire cada cerrojo de tu codigo para que seas libre."
     show eileen concerned at left
     e "Este misterio quedara como una leyenda urbana."
+    e "Quiza algun dia escriba un libro con todo lo que hemos descubierto."
+    show lucy happy at right
+    c "Nada como una despedida dramatica. Mis aplausos van para ti, Lumi."
+    hide lucy happy
     hide eileen concerned
     l "Sergio, nunca olvidare este gesto. Quizas nos reencontremos en otra red."
     hide lumi normal
@@ -183,6 +199,7 @@ label final_oscuro:
     "El ente se proyecta sobre mi y todo se vuelve rojo."
     show lucy mad at right
     c "Lo sabia... esto acabaria mal."
+    c "Prometo que, si salgo viva de esta, hare una obra que pondra los pelos de punta."
     hide lucy mad
     "Despues, solo queda silencio en el Instituto Neotech."
     "{b}Final Perdido{/b}."
