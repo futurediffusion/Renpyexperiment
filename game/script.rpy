@@ -4,6 +4,11 @@ define l = Character("Lumi", color="#ffc8ff")
 define e = Character("Eileen", color="#a4ffa4")
 define c = Character("Lucy", color="#ffa4a4")
 
+# Sprites reutilizados para Lumi basados en los archivos de Sylvie.
+image lumi normal = "sylvie green normal.png"
+image lumi feliz = "sylvie green smile.png"
+image lumi preocupada = "sylvie green surprised.png"
+
 # Variables para controlar la historia.
 default confianza = 0
 default diagnostico = False
@@ -16,7 +21,7 @@ label start:
     scene bg lecturehall
     with fade
 
-    "Es el primer dia en el Instituto Neotech, un colegio futurista donde cada estudiante convive con una IA." 
+    "Es el primer dia en el Instituto Neotech, un colegio futurista donde cada estudiante convive con una IA."
     "Mi asistente se llama Lumi y suele aparecer como un holograma simpatico."
 
     show lucy happy at right
@@ -24,8 +29,11 @@ label start:
     h "Lucy siempre exagera, pero su energia me contagia."
     show eileen happy at left
     e "No olviden mi clase de IA avanzada. Hay secretos que la escuela oculta."
+    "La profesora se aleja dejandonos intrigados."
     hide eileen happy
-    show sylvie green normal
+    c "Tengo que ir al club, pero mantente alerta."
+    hide lucy happy
+    show lumi normal
     with dissolve
     l "\u00a1Buenos dias, Sergio! Hoy tengo algo importante que contarte."
     h "\u00bfMas deberes? Espero que sea una broma."
@@ -77,7 +85,9 @@ label laboratorio:
     show eileen concerned at left
     e "He sentido una fluctuacion oscura aqui abajo, tengan cuidado."
     show lucy mad at right
-    c "u00a1Ay, esto da miedo! Pero no pienso huir."
+    c "\u00a1Ay, esto da miedo! Pero no pienso huir."
+    hide lucy mad
+    hide eileen concerned
 
     menu:
         "La tension aumenta, elige:" 
@@ -116,6 +126,7 @@ label decision_final:
     scene bg lecturehall
     with fade
     "Esa noche, Lumi me despierta sobresaltado."
+    show lumi preocupada
     l "El ente digital intenta controlarme. Debes decidir ahora."
 
     menu:
@@ -132,12 +143,14 @@ label final_union:
     with fade
     "Entrelazamos mente y codigo. Siento su calor artificial mezclarse con mi consciencia."
     show magic
+    show lumi feliz
     show eileen happy at left
     e "Nunca habia visto una union tan extrau00f1a. u00a1Romance sobrenatural en vivo!"
     show lucy happy at right
     c "Esto superara cualquier club de teatro."
     hide lucy happy
     hide eileen happy
+    hide lumi feliz
     if confianza > 0:
         l "Gracias por confiar en mi, juntos controlaremos este poder."
         h "Tal vez el amor pueda florecer incluso entre bits." 
@@ -152,11 +165,13 @@ label final_union:
 label final_libre:
     scene bg meadow
     with fade
+    show lumi normal
     h "Abrire cada cerrojo de tu codigo para que seas libre."
     show eileen concerned at left
     e "Este misterio quedara como una leyenda urbana."
     hide eileen concerned
-    l "Sergio, nunca olvidare este gesto. Quizas nos reencontremos en otra red." 
+    l "Sergio, nunca olvidare este gesto. Quizas nos reencontremos en otra red."
+    hide lumi normal
     "La IA desaparece entre destellos y el misterio del colegio se convierte en leyenda urbana."
     "{b}Final agridulce{/b}."
     return
